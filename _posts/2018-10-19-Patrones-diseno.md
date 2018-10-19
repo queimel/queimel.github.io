@@ -65,7 +65,7 @@ Entonces podemos llamar al método `metodoPublico()` que a su vez llamará al `m
 miModulo.metodoPublico();
 ```
 
-##Patrón de Módulo Revelado.
+## Patrón de Módulo Revelado.
 El patrón de módulo revelado es una versión ligeramente mejorada del patrón del módulo de Christian Heilmann. El problema con el patrón de módulo es que tenemos que crear funciones públicas nuevas solo para llamar a las funciones privadas y variables.
 
 En este patrón, asignamos las propiedades del objeto devuelto a las funciones privadas que queremos revelar cómo públicas. Es por esto que se llama patrón de módulo revelador. Por ejemplo:
@@ -118,18 +118,18 @@ myRevealingModule.setName('Mark');
 myRevealingModule.getName();
 ```
 
-####Ventajas del patrón de módulo revelado versus el patrón de módulo.
+#### Ventajas del patrón de módulo revelado versus el patrón de módulo.
 
 * Podemos cambiar los miembros de público a privado y viceversa modificando una sola línea en la sentencia `return`.
 
 * El objeto devuelto no contiene definiciones de funciones, todas las expresiones del lado derecho están definidas dentro del *IIFE*, lo que hace que el código sea claro y fácil de leer.
 
-##Módulos ES6
+## Módulos ES6
 Antes de ES6, JavaScript no tenía módulos integrados, por lo que los desarrolladores tenían que confiar en bibliotecas de terceros o en el patrón de módulos para implementar módulos. Pero con ES6, JavaScript tiene módulos nativos.
 
 Los módulos ES6 se guardan en archivos. Sólo puede haber un módulo por archivo. Todo lo que está dentro de un módulo es privado por defecto. Las funciones, variables y clases se exponen utilizando la palabra clave export. El código dentro de un módulo siempre se ejecuta en modo estricto.
 
-###Exportando un módulo
+### Exportando un módulo
 Existen dos maneras de exportar una función y una declaración de variable:
 
 * Agregando la palabra clave `export` delante de una declaración de función o variable. Por ejemplo:
@@ -340,7 +340,7 @@ console.log(truck);
 He creado un nuevo objeto `factory` de la clase `VehicleFactory`. Después de eso podemos crear un nuevo objeto `Car` o `Truck` llamando a `factory.createVehicle` y pasándole un objeto `options` con una propiedad `vehicleType` con el valor de `car` o `truck`.
 
 
-##Patrón Decorador
+## Patrón Decorador
 El patrón decorador es usado para extender la funcionalidad de un objeto sin tener que modificar la clase existente o la función constructora. Este patrón se puede usar para agregar características a un objeto sin tener modificar el código subyacente que los usa.
 
 Un ejemplo sencillo de este patrón podría ser:
@@ -436,7 +436,7 @@ console.log(car.cost());
 ```
 
 
-##Conclusión
+## Conclusión
 Hemos aprendido varios patrones de diseño usados en JavaScript, pero hay patrones que no se han cubierto aquí, que pueden ser implementados en JavaScript.
 
 Si bien es importante conocer varios patrones de diseño, también es igualmente importante no abusar de ellos. Antes de usar un patrón de diseño, debes considerar cuidadosamente si tu problema se ajusta o no a ese patrón de diseño. Para saber si un patrón se ajusta a tu problema, debes estudiar el patrón de diseño así como las aplicaciones de ese patrón de diseño.
