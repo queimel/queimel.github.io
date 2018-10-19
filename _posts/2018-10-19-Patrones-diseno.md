@@ -3,23 +3,22 @@ layout: post
 title: Entendiendo patrones de diseño en JavaScript
 ---
 
-#Entendiendo patrones de diseño en JavaScript
 *[original en ingles](https://blog.bitsrc.io/understanding-design-patterns-in-javascript-13345223f2dd) por Sukhjinder Arora*
 
 
 Cuando empiezas con un proyecto nuevo, no empiezas a codear inmediatamente. Primero debes definir el  propósito y el alcance del proyecto, para entonces listar las características o especificaciones del proyecto. Antes de que puedas empezar a codear o si estás trabajando en proyecto más complejo, debes elegir el patrón de diseño que mejor se adapte a su proyecto.
 
-##¿Qué es un patrón de diseño?
+## ¿Qué es un patrón de diseño? ##
 En ingeniería de software un patrón de diseño es una solución reusable para problemas que ocurren comúnmente en el diseño de software. Los patrones de diseño representan las mejores prácticas usadas por los desarrolladores más experimentados. Un patrón de diseño puede considerarse como una plantilla de programación.
 
-###¿Porqué usar patrones de diseño?
+### ¿Porqué usar patrones de diseño?
 Muchos programadores piensan que los patrones de diseño son una pérdida de tiempo o no saben cómo aplicarlos adecuadamente. Pero usar un patrón de diseño apropiado puede ayudarte a escribir un código mejor y más comprensible, y un código que puede ser fácilmente mantenible porque es fácil de entender.
 
 Pero más importante aún, los patrones de diseño entregan a los desarrolladores un vocabulario común con el cual comunicarse. Muestran la intención del código instantáneamente a alguien que está aprendiendo ese código.
 
 Por ejemplo, si estás usando el patrón decorador en tu proyecto, entonces un nuevo programador podría saber inmediatamente que esta haciendo ese trozo de código, y se podrá concentrar en resolver el problema del negocio, más que en tratar de entender el código.
 
-##Patrón de módulos
+## Patrón de módulos
 Un Módulo es una pieza de código autónomo, por lo que podemos actualizar el Módulo sin afectar las otras partes del código. Los módulos también nos permiten evitar la contaminación del espacio de nombres creando un ámbito separado para nuestras variables. También podemos reutilizar módulos en otros proyectos cuando están desacoplados de otras piezas de código.
 
 Los Módulos son una parte integral de cualquier aplicación JavaScript moderna, y ayuda a mantener nuestro código limpio, separado y organizado. Existen muchas maneras de crear módulos en JavaScript, una de ellas es el patrón de módulos.
