@@ -25,7 +25,7 @@ Los Módulos son una parte integral de cualquier aplicación JavaScript moderna,
 
 A diferencia de otros lenguajes de programación, JavaScript no tiene modificadores de acceso, o sea, no puedes declarar si una variable es pública o privada.  Por lo tanto, el patrón de Módulos también se utiliza para emular el concepto de encapsulación.
 
-Este patrón una las IIFE (*immediately-invoked function expression*), *closures* y *function scope* para simular este concepto, por ejemplo:
+Este patrón usa las IIFE (*immediately-invoked function expression*), *closures* y *function scope* para simular este concepto, por ejemplo:
 
 ```javascript
 const miModulo = (function() {
@@ -71,30 +71,31 @@ El patrón de módulo revelado es una versión ligeramente mejorada del patrón 
 En este patrón, asignamos las propiedades del objeto devuelto a las funciones privadas que queremos revelar cómo públicas. Es por esto que se llama patrón de módulo revelador. Por ejemplo:
 
 ```javascript
-const myRevealingModule = (function() {
+const miModuloRevelado = (function() {
   
-  let privateVar = 'Peter';
-  const publicVar  = 'Hello World';
-  function privateFunction() {
-    console.log('Name: '+ privateVar);
+  let varPrivada = 'Pedro';
+  const varPublica  = 'Hola Mundo';
+  function funcionPrivada() {
+    console.log('Nombre: '+ varPrivada);
   }
   
-  function publicSetName(name) {
-    privateVar = name;
+  function setNombrePublico(nombre) {
+    varPrivada = nombre;
   }
-  function publicGetName() {
-    privateFunction();
+  function getNombrePublico() {
+    funcionPrivada();
   }
-  /** reveal methods and variables by assigning them to object     properties */
+
+  /*** revela los metodos y variables asignandolas a las propiedades del objeto*/
 return {
-    setName: publicSetName,
-    greeting: publicVar,
-    getName: publicGetName
+    setNombre: setNombrePublico,
+    saludo: varPublica,
+    getNombre: getNombrePublico
   };
 })();
-myRevealingModule.setName('Mark');
-// prints Name: Mark
-myRevealingModule.getName();
+miModuloRevelado.setNombre('Marcos');
+// imprime Nombre: Marcos
+miModuloRevelado.getNombre();
 ```
 
 Este patrón hace más fácil entender cuáles de nuestras funciones y variables pueden ser accesadas públicamente, lo que ayuda en la legibilidad del código.
@@ -102,20 +103,20 @@ Este patrón hace más fácil entender cuáles de nuestras funciones y variables
 Después de ejecutar el código, el módulo `myRevealingModule` luce así:
 
 ```javascript
-const myRevealingModule = {
-  setName: publicSetName,
-  greeting: publicVar,
-  getName: publicGetName
+const miModuloRevelado = {
+  setNombre: setNombrePublico,
+  saludo: varPublica,
+  getNombre: getNombrePublico
 };
 ```
 
-Podemos llamar a `myRevealingModule.setName('Mark')`, que es una referencia al `publicSetName` interno y a `myRevealingModule.getName()`, que es una referencia al `publicGetName` interno. Por ejemplo:
+Podemos llamar a `miModuloRevelado.setNombre('Marcos')`, que es una referencia al `setNombrePublico` interno y a `miModuloRevelado.getNombre()`, que es una referencia al `getNombrePublico` interno. Por ejemplo:
 
 ```javascript
-myRevealingModule.setName('Mark');
+miModuloRevelado.setNombre('Marcos');
 
-// prints Name: Mark
-myRevealingModule.getName();
+// imprime Nombre: Marcos
+miModuloRevelado.getNombre();
 ```
 
 #### Ventajas del patrón de módulo revelado versus el patrón de módulo.
