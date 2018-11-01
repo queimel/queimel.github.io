@@ -403,14 +403,187 @@ La misma lógica que existe para los objetos. Todos los objetos delegaran hacia 
 
 ## Métodos estáticos
 
-Hasta este punto, hemos cubierto el por qué y cómo compartir métodos entre instancias de una Clase. Sin embargo, ¿qué pasaría si tuvieramos un método que fuera importante para la Clase, pero no fuese necesario compartirlo entre instancias? Por ejemplo, ¿qué pasaría si tuvieramos una función que tomara un Array de instancias de `Animal` y determinara cual es la siguiente que debe ser alimentada?. La llamaremos `nextToEat`.
+Hasta este punto, hemos cubierto el por qué y cómo compartir métodos entre instancias de una Clase. Sin embargo, ¿qué pasaría si tuvieramos un método que fuera importante para la Clase, pero no fuese necesario compartirlo entre instancias? Por ejemplo, ¿qué pasaría si tuvieramos una función que tomara un Array de instancias de `Animal` y determinara cual es la siguiente que debe ser alimentada?. La llamaremos `siguienteEnComer`.
 
 ```javascript
-function nextToEat (animals) {
-  const sortedByLeastEnergy = animals.sort((a,b) => {
-    return a.energy - b.energy
+function siguienteEnComer (animales) {
+  const ordenadoPorMenosEnergia = animales.sort((a,b) => {
+    return a.energia - b.energia
   })
 
-  return sortedByLeastEnergy[0].name
+  return ordenadoPorMenosEnergia[0].nombre
 }
 ```
+
+No tiene sentido que `siguienteEnComer` viva en `Animal.protpoype` porque no queremos compartirla entre todas las instancias. En cambio, podemos pensar que es más un método de ayuda. Entonces, si `siguienteEnComer` no debe vivir en `Animal.protpoype`, ¿Donde lo ponemos?. Bueno, la respuesta obvia es que podríamos colocar nextToEat en el mismo ámbito que nuestra clase Animal y luego hacer referencia cuando lo necesitemos como lo haríamos normalmente.
+
+```javascript
+class Animal {
+  constructor(nombre, energia) {
+    this.nombre = nombre
+    this.energia = energia
+  }
+  comer(cantidad) {
+    console.log(`${this.nombre} esta comiendo.`)
+    this.energia += cantidad
+  }
+  dormir(duracion) {
+    console.log(`${this.nombre} esta durmiendo.`)
+    this.energia += duracion
+  }
+  jugar(duracion) {
+    console.log(`${this.nombre} esta jugando.`)
+    this.energia -= duracion
+  }
+}
+
+function siguienteEnComer (animales) {
+  const ordenadoPorMenosEnergia = animales.sort((a,b) => {
+    return a.energia - b.energia
+  })
+
+  return ordenadoPorMenosEnergia[0].nombre
+}
+
+const leo = new Animal('Leo', 7)
+const snoop = new Animal('Snoop', 10)
+
+console.log(siguienteEnComer([leo, snoop])) // Leo
+
+```
+
+Ahora funciona, pero existe una mejor manera.
+
+> Siempre que tenga un método que sea específico para una clase en sí, pero que no necesite ser compartido entre instancias de esa clase, puede agregarlo como una propiedad `static` de la clase.
+
+```javascript
+class Animal {
+    constructor(nombre, energia) {
+        this.nombre = nombre
+        this.energia = energia
+    }
+    comer(cantidad) {
+        console.log(`${this.nombre} esta comiendo.`)
+        this.energia += cantidad
+    }
+    dormir(duracion) {
+        console.log(`${this.nombre} esta durmiendo.`)
+        this.energia += duracion
+    }
+    jugar(duracion) {
+        console.log(`${this.nombre} esta jugando.`)
+        this.energia -= duracion
+    }
+
+    static siguienteEnComer (animales) {
+        const ordenadoPorMenosEnergia = animales.sort((a,b) => {
+            return a.energia - b.energia
+        })
+
+        return ordenadoPorMenosEnergia[0].nombre
+    }
+}
+
+```
+
+Ahora, debido a que agregamos `siguienteEnComer` como una propiedad estática en la clase, vive en la propia clase `Animal` (no en su prototipo) y se puede acceder utilizando `Animal.siguienteEnComer`.
+
+```javascript
+const leo = new Animal('Leo', 7)
+const snoop = new Animal('Snoop', 10)
+
+console.log(Animal.siguienteEnComer([leo, snoop])) // Leo
+```
+Debido a que hemos seguido un patrón similar a lo largo de esta publicación, echemos un vistazo a cómo lograríamos esto con ES5. En el ejemplo anterior vimos cómo el uso de la palabra clave `static` pondría el método directamente en la propia clase. Con ES5, este mismo patrón es tan simple como simplemente agregar manualmente el método al objeto de función.
+
+
+```javascript
+function Animal (nombre, energia) {
+  animal.nombre = nombre
+  animal.energia = energia
+}
+
+Animal.prototype.comer = function (cantidad) {
+  console.log(`${this.nombre} está comiendo.`)
+  this.energia += cantidad
+}
+
+Animal.prototype.dormir = function (duración) {
+  console.log(`${this.nombre} está durmiendo.`)
+  this.energia += duración
+}
+
+Animal.prototype.jugar = function (duración) {
+  console.log(`${this.nombre} está jugando.`)
+  this.energia -= duración
+}
+
+Animal.siguienteEnComer = function (animales) {
+    const ordenadoPorMenosEnergia = animales.sort((a,b) => {
+        return a.energia - b.energia
+    })
+
+    return ordenadoPorMenosEnergia[0].nombre
+}
+
+const leo = new Animal('Leo', 7)
+const snoop = new Animal('Snoop', 10)
+
+console.log(Animal.siguienteEnComer([leo, snoop])) // Leo
+```
+
+## Obtener el prototype de un objeto
+
+Sin importar que patrón se use para crear un objeto, obtener el `prototype` de ese objeto se puede lograr usando el método `Object.getPrototypeOf`.
+
+```javascript
+function Animal (nombre, energia) {
+  animal.nombre = nombre
+  animal.energia = energia
+}
+
+Animal.prototype.comer = function (cantidad) {
+  console.log(`${this.nombre} está comiendo.`)
+  this.energia += cantidad
+}
+
+Animal.prototype.dormir = function (duración) {
+  console.log(`${this.nombre} está durmiendo.`)
+  this.energia += duración
+}
+
+Animal.prototype.jugar = function (duración) {
+  console.log(`${this.nombre} está jugando.`)
+  this.energia -= duración
+}
+
+const leo = new Animal('Leo', 7)
+const prototype = Object.getPrototypeOf(leo)
+
+console.log(prototype)
+// {constructor: ƒ, comer: ƒ, dormir: ƒ, jugar: ƒ}
+
+prototype === Animal.prototype // true
+
+```
+
+Hay dos puntos importantes del código anterior.
+
+Primero, notarás que ese `proto` es un objeto con 4 métodos, `constructor`, `comer`, `dormir`y `jugar`. Esto tiene sentido. Usamos `getPrototypeOf` pasandole la instancia, `leo`obteniendo de vuelta el prototype de esa instancia, que es donde todos nuestros métodos estan viviendo. Esto nos dice una cosa más sobre `prototype`de la cual aún no hemos hablado. Por defecto, el objeto `prototype` tiene una propiedad `constructor` que apunta a la función original o la clase desde la que se creó la instancia. Lo que esto también significa es que, debido a que JavaScript coloca una propiedad `constructor`en el prototipo por defecto, cualquiera de las instancias podrá acceder a su constructor a través de `instance.constructor`.
+
+El segundo punto importante del código de arriba es que `Object.getPrototypeOf(leo) === Animal.prototype`. Esto también tiene sentido. La función constructora `Animal` tiene una propiedad `prototype` donde podemos compartir métodos a través de todas las instancias y `getPrototypeOf` nos deja ver el `prototype` de la propia instancia.
+
+```javascript
+function Animal (nombre, energia) {
+  animal.nombre = nombre
+  animal.energia = energia
+}
+const leo = new Animal('Leo', 7)
+
+console.log(leo.constructor) // loguea la función constructora
+
+```
+
+Para relacionar lo que hablamos anteriormente con `Object.create`, la razón por la que esto funciona es porque cualquier instancia de `Animal` va a delegar a `Animal.prototype` en las búsquedas fallidas. Entonces, cuando intentas acceder a `leo.prototype`, `leo` no tiene una propiedad `prototype`, por lo que delegará esa búsqueda en `Animal.prototype`, que de hecho sí tiene una propiedad de constructor. Si este párrafo no tiene sentido, vuelve atrás y lee sobre `Object.create` más arriba.
+
+> Es posible que hayas visto `__proto__ `utilizado antes para obtener el `prototype`de una instancia. Esa es una reliquia del pasado. En su lugar, usa __Object.getPrototypeOf(instancia)__ como vimos anteriormente.
