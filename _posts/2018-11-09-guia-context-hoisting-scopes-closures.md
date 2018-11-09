@@ -78,4 +78,46 @@ function getUser () {
 
 > Este proceso de asignar a declaraciones de variables un valor predeterminado de `undefined` durante la fase de creación es llamado __*Hoisting*__ (elevar, levantar, mover una declaracion de variable al principio del contexto).
 
-Esperemos que hayas pensado '¡Ajá! ". Es posible que te hayan explicado el "hoisting" previamente sin mucho éxito. Lo que es confuso acerca del *"hoisting"* es que nada es realmente *"elevado"* o movido de alguna forma. Ahora que comprendes los Contextos de ejecución y que a las declaraciones de variables se les asigna un valor predeterminado de `undefined` durante la fase de Creación, deberias entender el concepto de "hoisting" porque eso es, literalmente, todo lo que es.
+Esperemos que hayas pensado '¡Ajá! ". Es posible que te hayan explicado el "hoisting" previamente sin mucho éxito. Lo que es confuso acerca del *"hoisting"* es que nada es realmente *"elevado"* o movido de alguna forma. Ahora que comprendes los Contextos de ejecución y que a las declaraciones de variables se les asigna un valor predeterminado de `undefined` durante la fase de Creación, deberias entender el concepto de *"hoisting"* porque eso es, literalmente, todo lo que es.
+
+- - - -
+
+En este punto, deberías sentirse bastante cómodo con el Contexto de ejecución global y sus dos fases, `Creación` y `Ejecución`. La buena noticia es que solo hay otro Contexto de Ejecución que necesita aprender y es casi exactamente idéntico al Contexto de Ejecución Global. Se llama el __Contexto de Ejecución de la Función__ y se crea cada vez que se __invoca__ una función.
+
+Esto es clave. La única vez que se crea un Contexto de Ejecución es cuando el motor de JavaScript comienza a interpretar tu código (Contexto de Ejecución Global) y cada vez que se invoca una función.
+
+Ahora, la pregunta principal que debemos responder es cuál es la diferencia entre el contexto de ejecución global y el contexto de ejecución de una función. Si recordamos lo anterior, dijimos que en la fase de Creación Global, el motor de JavaScript:
+
+1. Creará un objeto global.
+2. Creará un objeto llamado `this`.
+3. Asiganara espacio de memoria a las variables y funciones.
+4. Asignará a las declaraciones de variables un valor predeterminado de "undefined" mientras coloca las declaraciones de funciones en la memoria.
+
+¿Cuál de esos pasos no tiene sentido cuando estamos hablando de un contexto de ejecución de funciones? Es el paso #1. Solo debemos tener un objeto global que se cree durante la fase de Creación del Contexto de Ejecución Global, no cada vez que se invoca una función y el motor de JavaScript crea un Contexto de Ejecución de Funciones. En vez de crear un objeto global, una cosa de la que debe preocuparse un Contexto de Ejecución de Función es que el Contexto de Ejecución Global no sean argumentos. Con esto en mente, podemos adaptar nuestra lista de antes. Cada vez que se crea un contexto de ejecución de funciones, el motor de JavaScript:
+
+1. ~~Creará un objeto global.~~
+1. Creará un objeto `arguments`.
+2. Creará un objeto llamado `this`.
+3. Asiganara espacio de memoria a las variables y funciones.
+4. Asignará a las declaraciones de variables un valor predeterminado de "undefined" mientras coloca las declaraciones de funciones en la memoria.
+
+Para ver esto en acción, volvamos al código que teníamos anteriormente, pero esta vez, en lugar de simplemente definir `getUser`, veamos qué sucede cuando lo invocamos.
+
+>[Visualice el código tú mismo](https://tylermcginnis.com/javascript-visualizer/?code=var%20name%20%3D%20%27Tyler%27%0Avar%20handle%20%3D%20%27%40tylermcginnis%27%0A%0Afunction%20getUser%20%28%29%20%7B%0A%20%20return%20%7B%0A%20%20%20%20name%3A%20name%2C%0A%20%20%20%20handle%3A%20handle%0A%20%20%7D%0A%7D%0A%0AgetUser%28%29)
+
+![function-execution-context-gif.gif](/images/function-execution-context-gif.gif)
+
+Tal como hablamos, cuando invocamos la función `getUser` un nuevo contexto de ejecución es creado. Durante la fase de creación del contexto de ejecución de `getUser`, el motor de JavaScript crea un objeto `this` asi como también un objeto `arguments`. Debido a que `getUser` no tiene ninguna variable, el motor de JavaScript no necesita asignar ningún espacio de memoria o "levantar" (hoist) cualquier declaración de variable.
+
+Es posible que también hayas notado que cuando la función `getUser` termina de ejecutarse, se elimina de la visualización. En realidad, el motor de JavaScript crea lo que se llama una "Pila de ejecución" (también conocida como la "Pila de llamadas"). Cada vez que se invoca una función, se crea un nuevo Contexto de Ejecución y se agrega a la Pila de Ejecución. Cuando una función termina de ejecutarse en la fase de Creación y Ejecución, se extrae de la Pila de Ejecución. Debido a que JavaScript es de un solo hilo (lo que significa que solo se puede ejecutar una tarea a la vez), esto es fácil de visualizar. Con "JavaScript Visualizer", la pila de ejecución se muestra de forma anidada, y cada elemento anidado es un nuevo contexto de ejecución en la pila de ejecución.
+
+>[Visualice el código tú mismo](https://tylermcginnis.com/javascript-visualizer/?code=function%20a%20%28%29%20%7B%0A%20%20console.log%28%27In%20fn%20a%27%29%0A%20%20%0A%20%20function%20b%20%28%29%20%7B%0A%20%20%20%20console.log%28%27In%20fn%20b%27%29%0A%20%20%20%20%0A%20%20%20%20function%20c%20%28%29%20%7B%0A%20%20%20%20%20%20console.log%28%27In%20fn%20c%27%29%0A%20%20%20%20%7D%0A%20%20%20%20%0A%20%20%20%20c%28%29%0A%20%20%7D%0A%0A%20%20b%28%29%0A%7D%0A%0Aa%28%29)
+
+![javascript-execution-stack.gif](/images/javascript-execution-stack.gif)
+
+En este punto, hemos visto cómo las invocaciones de funciones crean su propio Contexto de Ejecución que se coloca en la Pila de Ejecución. Lo que no hemos visto todavía es cómo las variables locales juegan en eso. Cambiemos nuestro código para que nuestras funciones tengan variables locales.
+
+>[Visualice el código tú mismo](https://tylermcginnis.com/javascript-visualizer/?code=var%20name%20%3D%20%27Tyler%27%0Avar%20handle%20%3D%20%27%40tylermcginnis%27%0A%0Afunction%20getURL%20%28handle%29%20%7B%0A%20%20var%20twitterURL%20%3D%20%27https%3A%2F%2Ftwitter.com%2F%27%0A%0A%20%20return%20twitterURL%20%2B%20handle%0A%7D%0A%0AgetURL%28handle%29)
+
+![local-variables.gif](/images/local-variables.gif)
+
