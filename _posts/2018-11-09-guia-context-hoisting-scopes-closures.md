@@ -142,7 +142,7 @@ Vamos a verlo en JavaScript Visualizer.
 
 >[Visualiza el código tú mismo](https://tylermcginnis.com/javascript-visualizer/?code=function%20foo%20%28%29%20%7B%0A%20%20var%20bar%20%3D%20%27Declared%20in%20foo%27%0A%7D%0A%0Afoo%28%29%0A%0Aconsole.log%28bar%29)
 
-[scope.gif](/images/scope.gif)
+![scope.gif](/images/scope.gif)
 
 Cuando se invoca foo, creamos un nuevo Contexto de Ejecución en la Pila de Ejecución. La fase de `creación` crea `this`, `arguments` y le asigna a `bar` un `undefined`. Entonces pasa a la fase de `ejecución` y asigna la cadena de texto `Declared in foo` a la variable `bar`.  Despues de esto la fase de `ejecución` termina y el Contexto de Ejecución foo se saca de la pila de ejecución. Una vez que se elimina `foo` de la pila de ejecución, intentamos loguear `bar` en la consola. En ese momento, según JavaScript Visualizer, es como si `bar` ni siquiera existiera, por lo que arroja un `undefined`. Lo que esto nos demuestra es que las variables creadas dentro de una función tienen un ámbito local. Esto significa que (en su mayor parte, veremos una excepción más adelante) no se puede acceder a ellas una vez que el Contexto de Ejecución de la función haya salido de la Pila de Ejecución.
 
@@ -173,7 +173,7 @@ De nuevo, echemos un vistazo a JavaScript Visualizer.
 >[Visualiza el código tú mismo](https://tylermcginnis.com/javascript-visualizer?code=function%20first%20%28%29%20%7B%0A%20%20var%20name%20%3D%20%27Jordyn%27%0A%0A%20%20console.log%28name%29%0A%7D%0A%0Afunction%20second%20%28%29%20%7B%0A%20%20var%20name%20%3D%20%27Jake%27%0A%0A%20%20console.log%28name%29%0A%7D%0A%0Aconsole.log%28name%29%0Avar%20name%20%3D%20%27Tyler%27%0Afirst%28%29%0Asecond%28%29%0Aconsole.log%28name%29)
 
 
-[unique-scopes.gif](/images/unique-scopes.gif)
+![unique-scopes.gif](/images/unique-scopes.gif)
 
 Nos arroja `undefined`, `Jordyn`, `Jake` y luego `Tyler`. Lo que esto nos muestra, es que puedes pensar en esto como si cada contexto de ejecución tuviese su propio y único entorno de variables. Aunque hayan otros contextos de ejecución que contengan el nombre de la variable, el motor de JavaScript buscará la variable primero en el contexto actual.
 
@@ -191,7 +191,7 @@ logName()
 
 >[Visualiza el código tú mismo](https://tylermcginnis.com/javascript-visualizer/?code=var%20name%20%3D%20%27Tyler%27%0A%0Afunction%20logName%20%28%29%20%7B%0A%20%20console.log%28name%29%0A%7D%0A%0AlogName%28%29)
 
-[parent-lookup.gif](/images/parent-lookup.gif)
+![parent-lookup.gif](/images/parent-lookup.gif)
 
 Su intuición podría decir que se registrará `undefined` ya que el contexto de ejecución `logName` no tiene una variable `name` en su *scope*. Eso es justo pero está mal. Lo que sucede es que si el motor de JavaScript no puede encontrar una variable local en el contexto de ejecución de la función, buscará en el contexto de ejecución padre más cercano para esa variable. Esta cadena de búsqueda continuará hasta que el motor alcance el Contexto de ejecución global. En ese caso, si el contexto de ejecución global no tiene la variable, generará un error de referencia.
 
@@ -203,7 +203,7 @@ Anteriormente, aprendimos que las variables creadas dentro de una función tiene
 
 >[Visualiza el código tú mismo](https://tylermcginnis.com/javascript-visualizer/?code=var%20count%20%3D%200%0A%0Afunction%20makeAdder%28x%29%20%7B%0A%20%20return%20function%20inner%20%28y%29%20%7B%0A%20%20%20%20return%20x%20%2B%20y%3B%0A%20%20%7D%3B%0A%7D%0A%0Avar%20add5%20%3D%20makeAdder%285%29%3B%0Acount%20%2B%3D%20add5%282%29)
 
-[closure-scope.gif](/images/closure-scope.gif)
+![closure-scope.gif](/images/closure-scope.gif)
 
 Tenga en cuenta que después de que el contexto de ejecución de `makeAdder` se haya extraído de la pila de ejecución, el visualizador de JavaScript crea lo que se llama un `Closure scope`. Dentro de ese `Closure scope` se encuentra el mismo entorno de variables que existía en el contexto de ejecución de `makeAdder`. La razón por la que esto sucedió es porque tenemos una función anidada dentro de otra función. En nuestro ejemplo, la función interna está anidada dentro de la función makeAdder, por lo que la función interna crea un cierre sobre el entorno de variable makeAdder. Incluso después de que el entorno de ejecución de `makeAdder` se haya extraído de la pila de ejecución, debido a que se creó el `Closure Scope`, la función interna tiene acceso a la variable `x` (a través del `Scope chain`).
 
