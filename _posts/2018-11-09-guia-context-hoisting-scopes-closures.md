@@ -103,7 +103,7 @@ Ahora, la pregunta principal que debemos responder es cuál es la diferencia ent
 
 Para ver esto en acción, volvamos al código que teníamos anteriormente, pero esta vez, en lugar de simplemente definir `getUser`, veamos qué sucede cuando lo invocamos.
 
->[Visualice el código tú mismo](https://tylermcginnis.com/javascript-visualizer/?code=var%20name%20%3D%20%27Tyler%27%0Avar%20handle%20%3D%20%27%40tylermcginnis%27%0A%0Afunction%20getUser%20%28%29%20%7B%0A%20%20return%20%7B%0A%20%20%20%20name%3A%20name%2C%0A%20%20%20%20handle%3A%20handle%0A%20%20%7D%0A%7D%0A%0AgetUser%28%29)
+>[Visualiza el código tú mismo](https://tylermcginnis.com/javascript-visualizer/?code=var%20name%20%3D%20%27Tyler%27%0Avar%20handle%20%3D%20%27%40tylermcginnis%27%0A%0Afunction%20getUser%20%28%29%20%7B%0A%20%20return%20%7B%0A%20%20%20%20name%3A%20name%2C%0A%20%20%20%20handle%3A%20handle%0A%20%20%7D%0A%7D%0A%0AgetUser%28%29)
 
 ![function-execution-context-gif.gif](/images/function-execution-context-gif.gif)
 
@@ -111,13 +111,13 @@ Tal como hablamos, cuando invocamos la función `getUser` un nuevo contexto de e
 
 Es posible que también hayas notado que cuando la función `getUser` termina de ejecutarse, se elimina de la visualización. En realidad, el motor de JavaScript crea lo que se llama una "Pila de ejecución" (también conocida como la "Pila de llamadas"). Cada vez que se invoca una función, se crea un nuevo Contexto de Ejecución y se agrega a la Pila de Ejecución. Cuando una función termina de ejecutarse en la fase de Creación y Ejecución, se extrae de la Pila de Ejecución. Debido a que JavaScript es de un solo hilo (lo que significa que solo se puede ejecutar una tarea a la vez), esto es fácil de visualizar. Con "JavaScript Visualizer", la pila de ejecución se muestra de forma anidada, y cada elemento anidado es un nuevo contexto de ejecución en la pila de ejecución.
 
->[Visualice el código tú mismo](https://tylermcginnis.com/javascript-visualizer/?code=function%20a%20%28%29%20%7B%0A%20%20console.log%28%27In%20fn%20a%27%29%0A%20%20%0A%20%20function%20b%20%28%29%20%7B%0A%20%20%20%20console.log%28%27In%20fn%20b%27%29%0A%20%20%20%20%0A%20%20%20%20function%20c%20%28%29%20%7B%0A%20%20%20%20%20%20console.log%28%27In%20fn%20c%27%29%0A%20%20%20%20%7D%0A%20%20%20%20%0A%20%20%20%20c%28%29%0A%20%20%7D%0A%0A%20%20b%28%29%0A%7D%0A%0Aa%28%29)
+>[Visualiza el código tú mismo](https://tylermcginnis.com/javascript-visualizer/?code=function%20a%20%28%29%20%7B%0A%20%20console.log%28%27In%20fn%20a%27%29%0A%20%20%0A%20%20function%20b%20%28%29%20%7B%0A%20%20%20%20console.log%28%27In%20fn%20b%27%29%0A%20%20%20%20%0A%20%20%20%20function%20c%20%28%29%20%7B%0A%20%20%20%20%20%20console.log%28%27In%20fn%20c%27%29%0A%20%20%20%20%7D%0A%20%20%20%20%0A%20%20%20%20c%28%29%0A%20%20%7D%0A%0A%20%20b%28%29%0A%7D%0A%0Aa%28%29)
 
 ![javascript-execution-stack.gif](/images/javascript-execution-stack.gif)
 
 En este punto, hemos visto cómo las invocaciones de funciones crean su propio Contexto de Ejecución que se coloca en la Pila de Ejecución. Lo que no hemos visto todavía es cómo las variables locales juegan en eso. Cambiemos nuestro código para que nuestras funciones tengan variables locales.
 
->[Visualice el código tú mismo](https://tylermcginnis.com/javascript-visualizer/?code=var%20name%20%3D%20%27Tyler%27%0Avar%20handle%20%3D%20%27%40tylermcginnis%27%0A%0Afunction%20getURL%20%28handle%29%20%7B%0A%20%20var%20twitterURL%20%3D%20%27https%3A%2F%2Ftwitter.com%2F%27%0A%0A%20%20return%20twitterURL%20%2B%20handle%0A%7D%0A%0AgetURL%28handle%29)
+>[Visualiza el código tú mismo](https://tylermcginnis.com/javascript-visualizer/?code=var%20name%20%3D%20%27Tyler%27%0Avar%20handle%20%3D%20%27%40tylermcginnis%27%0A%0Afunction%20getURL%20%28handle%29%20%7B%0A%20%20var%20twitterURL%20%3D%20%27https%3A%2F%2Ftwitter.com%2F%27%0A%0A%20%20return%20twitterURL%20%2B%20handle%0A%7D%0A%0AgetURL%28handle%29)
 
 ![local-variables.gif](/images/local-variables.gif)
 
